@@ -7,13 +7,56 @@ import { BookOpen, Search, Menu } from 'lucide-react';
 import { FamilyConfig } from './types';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
+const getInitialFamily = (): FamilyConfig | null => {
+  if (typeof window === 'undefined') return DEFAULT_FAMILIES[0];
+  const params = new URLSearchParams(window.location.search);
+  const familyId = params.get('family');
+  if (familyId) {
+    const matched = DEFAULT_FAMILIES.find(f => f.id.toLowerCase() === familyId.toLowerCase());
+    if (matched) return matched;
+  }
+  return DEFAULT_FAMILIES[0];
+};
+
 function AppContent() {
-  const [selectedFamily, setSelectedFamily] = useState<FamilyConfig | null>(DEFAULT_FAMILIES[0]);
+  const [selectedFamily, setSelectedFamily] = useState<FamilyConfig | null>(getInitialFamily());
   const { t, language, setLanguage } = useLanguage();
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const params = new URLSearchParams(window.location.search);
+      const familyId = params.get('family');
+      if (familyId) {
+        const matched = DEFAULT_FAMILIES.find(f => f.id.toLowerCase() === familyId.toLowerCase());
+        if (matched) {
+          setSelectedFamily(matched);
+          return;
+        }
+      }
+      setSelectedFamily(DEFAULT_FAMILIES[0] || null);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const handleSetSelectedFamily = (family: FamilyConfig | null) => {
+    setSelectedFamily(family);
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      if (family) {
+        params.set('family', family.id);
+      } else {
+        params.delete('family');
+      }
+      const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
+      window.history.pushState({ familyId: family?.id }, '', newUrl);
+    }
+  };
 
   const getPageTitle = () => {
     if (selectedFamily) {
-      return `${t.titleFamilyPrefix} ${selectedFamily.name[language]} ${t.titleFamilySuffix} ${selectedFamily.coatOfArms[language]}`;
+      return `${t.titleFamilyPrefix} ${selectedFamily.name[language]} ${t.titleFamilySuffix} ${selectedFamily.coatOfArms[language]} | ${t.titlePrefix} ${t.titleSuffix}`;
     }
     return `${t.titlePrefix} ${t.titleSuffix} - ${t.heroTag}`;
   };
@@ -27,7 +70,25 @@ function AppContent() {
     return t.heroSubtitle;
   };
 
-  const keywords = "Станкевич, родовід Станкевичів, Stankiewicz, genealogia Stankiewiczów, Stankiewicz family tree, герб Могила, herb Mogiła, noble families, шляхта";
+  const getOgImage = () => {
+    if (selectedFamily?.coatOfArmsImageUrl) {
+      return selectedFamily.coatOfArmsImageUrl;
+    }
+    return typeof window !== 'undefined' ? `${window.location.origin}/favicon.svg` : '';
+  };
+
+  const getLanguageUrl = (lang: string) => {
+    if (typeof window === 'undefined') return '';
+    const params = new URLSearchParams(window.location.search);
+    params.set('lang', lang);
+    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  };
+
+  const keywords = selectedFamily 
+    ? `${selectedFamily.name['uk']}, родовід ${selectedFamily.name['uk']}ів, ${selectedFamily.name['en']}, genealogia ${selectedFamily.name['pl']}ów, ${selectedFamily.name['en']} family tree, герб ${selectedFamily.coatOfArms['uk']}, herb ${selectedFamily.coatOfArms['pl']}, pedigree, noble families, шляхта`
+    : "Станкевич, родовід Станкевичів, Stankiewicz, genealogia Stankiewiczów, Stankiewicz family tree, герб Могила, herb Mogiła, noble families, шляхта, родоводи шляхти, генеалогія";
+
+  const currentCanonical = typeof window !== 'undefined' ? window.location.href : '';
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -35,15 +96,32 @@ function AppContent() {
         <title>{getPageTitle()}</title>
         <meta name="description" content={getPageDescription()} />
         <meta name="keywords" content={keywords} />
-        <link rel="canonical" href={window.location.href} />
+        <link rel="canonical" href={currentCanonical} />
+        
+        {/* hreflang tags for beautiful multilingual indexation */}
+        <link rel="alternate" hrefLang="uk" href={getLanguageUrl('uk')} />
+        <link rel="alternate" hrefLang="en" href={getLanguageUrl('en')} />
+        <link rel="alternate" hrefLang="pl" href={getLanguageUrl('pl')} />
+        <link rel="alternate" hrefLang="x-default" href={getLanguageUrl('uk')} />
+
+        {/* Open Graph Tags for high traction sharing */}
         <meta property="og:title" content={getPageTitle()} />
         <meta property="og:description" content={getPageDescription()} />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content={currentCanonical} />
+        <meta property="og:image" content={getOgImage()} />
+        <meta property="og:site_name" content={`${t.titlePrefix} ${t.titleSuffix}`} />
+        
+        {/* Twitter Card tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={getPageTitle()} />
+        <meta name="twitter:description" content={getPageDescription()} />
+        <meta name="twitter:image" content={getOgImage()} />
       </Helmet>
       {/* Header */}
       <header className="border-b border-parchment-dark bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={() => setSelectedFamily(null)}>
+          <div className="flex items-center gap-3 cursor-pointer" onClick={() => handleSetSelectedFamily(null)}>
             <div className="w-10 h-10 rounded-full bg-crimson flex items-center justify-center">
               <BookOpen className="text-gold w-5 h-5" />
             </div>
@@ -123,7 +201,7 @@ function AppContent() {
                 {DEFAULT_FAMILIES.map(family => (
                   <button
                     key={family.id}
-                    onClick={() => setSelectedFamily(family)}
+                    onClick={() => handleSetSelectedFamily(family)}
                     className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
                       selectedFamily?.id === family.id 
                         ? 'bg-ink text-parchment shadow-md' 
