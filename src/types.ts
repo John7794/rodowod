@@ -12,6 +12,8 @@ export interface Person {
   birthPlace: string;
   deathDate: string;
   deathPlace: string;
+  marriageDate: string;
+  marriagePlace: string;
   description: string;
   sources: string;
   coatOfArms?: string;
@@ -27,6 +29,7 @@ export interface FamilyConfig {
   id: string;
   name: LocalizedString;
   coatOfArms: LocalizedString;
+  coatOfArmsImageUrl?: string;
   historyPreview?: LocalizedString;
   googleSheetCsvUrl: LocalizedString;
 }

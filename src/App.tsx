@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { DEFAULT_FAMILIES } from './data';
 import PedigreeView from './components/PedigreeView';
 import ContactSection from './components/ContactSection';
-import { BookOpen, Search, Menu, MousePointerClick } from 'lucide-react';
+import { BookOpen, Search, Menu } from 'lucide-react';
 import { FamilyConfig } from './types';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
@@ -28,21 +28,17 @@ function AppContent() {
             </h1>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
-            <a href="#families" className="text-ink hover:text-crimson transition-colors flex items-center gap-1.5 cursor-pointer">
-              <MousePointerClick className="w-3.5 h-3.5 text-crimson" />
+            <a href="#families" className="text-ink hover:text-crimson transition-colors cursor-pointer">
               {t.navFamilies}
             </a>
-            <a href="#about" className="text-ink hover:text-crimson transition-colors flex items-center gap-1.5 cursor-pointer">
-              <MousePointerClick className="w-3.5 h-3.5 text-crimson" />
+            <a href="#about" className="text-ink hover:text-crimson transition-colors cursor-pointer">
               {t.navAbout}
             </a>
-            <a href="#contact" className="text-ink hover:text-crimson transition-colors flex items-center gap-1.5 cursor-pointer">
-              <MousePointerClick className="w-3.5 h-3.5 text-crimson" />
+            <a href="#contact" className="text-ink hover:text-crimson transition-colors cursor-pointer">
               {t.navContact}
             </a>
             
             <div className="flex items-center gap-2 border-l border-parchment-dark pl-6">
-              <MousePointerClick className="w-4 h-4 text-crimson mr-1" />
               <button onClick={() => setLanguage('uk')} className={`transition-colors cursor-pointer ${language === 'uk' ? 'text-crimson font-bold' : 'text-ink-light hover:text-ink'}`}>UA</button>
               <button onClick={() => setLanguage('en')} className={`transition-colors cursor-pointer ${language === 'en' ? 'text-crimson font-bold' : 'text-ink-light hover:text-ink'}`}>EN</button>
               <button onClick={() => setLanguage('pl')} className={`transition-colors cursor-pointer ${language === 'pl' ? 'text-crimson font-bold' : 'text-ink-light hover:text-ink'}`}>PL</button>
@@ -50,7 +46,6 @@ function AppContent() {
           </nav>
           <div className="md:hidden flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <MousePointerClick className="w-4 h-4 text-crimson" />
               <button onClick={() => setLanguage('uk')} className={`text-xs cursor-pointer ${language === 'uk' ? 'text-crimson font-bold' : 'text-ink-light'}`}>UA</button>
               <button onClick={() => setLanguage('en')} className={`text-xs cursor-pointer ${language === 'en' ? 'text-crimson font-bold' : 'text-ink-light'}`}>EN</button>
               <button onClick={() => setLanguage('pl')} className={`text-xs cursor-pointer ${language === 'pl' ? 'text-crimson font-bold' : 'text-ink-light'}`}>PL</button>

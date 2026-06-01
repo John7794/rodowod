@@ -8,6 +8,7 @@ export const DEFAULT_FAMILIES: FamilyConfig[] = [
     id: "stankiewicz",
     name: { uk: "Станкевич", en: "Stankiewicz", pl: "Stankiewicz" },
     coatOfArms: { uk: "Могила", en: "Mogila", pl: "Mogiła" },
+    coatOfArmsImageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/POL_COA_Mogi%C5%82a.svg/960px-POL_COA_Mogi%C5%82a.svg.png",
     googleSheetCsvUrl: {
       uk: "https://docs.google.com/spreadsheets/d/e/2PACX-1vTBhmc6cg3Q0tplWVtpUBJCWwyykgM44B8pa2sB62sgvm7-nh7kIuw8O1CyNX3Cb3VSC3TijYakIJNA/pub?gid=0&single=true&output=csv",
       en: "https://docs.google.com/spreadsheets/d/e/2PACX-1vThdbZf_ncPCK9SyD7bUa2WdDuzNvqdhuB3HWm6Wq8EHhI2Pbg_ti_njJ5vJKCgAiTu8zc18mFLz4GW/pub?gid=0&single=true&output=csv",

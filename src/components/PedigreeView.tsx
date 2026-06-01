@@ -69,6 +69,8 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
             birthPlace: row.birthPlace || '',
             deathDate: row.deathDate || '',
             deathPlace: row.deathPlace || '',
+            marriageDate: row.marriageDate || '',
+            marriagePlace: row.marriagePlace || '',
             description: row.description || '',
             sources: row.sources || '',
             coatOfArms: row.coatOfArms || undefined,
@@ -132,15 +134,41 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
     <div className="max-w-5xl mx-auto mt-8 bg-[#fdfbf7] p-6 md:p-12 shadow-sm rounded border border-[#e8dfc9] relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-50"></div>
       
-      <div className="text-center mb-16">
-        <h2 className="text-3xl md:text-4xl font-display font-medium text-ink mb-2">
-          {t.titleFamilyPrefix} {family.name[language]} {t.titleFamilySuffix} {family.coatOfArms[language]}
-        </h2>
-        {family.historyPreview?.[language] && (
-          <p className="text-ink-light text-sm italic max-w-4xl mx-auto mt-4 px-4">
-            [{family.historyPreview[language]}]
-          </p>
-        )}
+      <div className="sticky top-[64px] md:top-20 z-30 bg-[#fdfbf7] py-3 md:py-4 mb-6 border-b border-[#e8dfc9] -mx-6 px-6 md:-mx-12 md:px-12 -mt-6 md:-mt-12 rounded-t shadow-sm">
+        <div className="flex flex-row items-center justify-between gap-4 max-w-4xl mx-auto">
+          <div className="text-left flex-1">
+            <h2 className="text-lg md:text-3xl font-display font-medium text-ink mb-0.5 md:mb-1 leading-tight">
+              <span className="block">{t.titleFamilyPrefix} {family.name[language]}</span>
+              <span className="block">{t.titleFamilySuffix} {family.coatOfArms[language]}</span>
+            </h2>
+            {family.historyPreview?.[language] && (
+              <p className="text-ink-light text-[10px] md:text-xs italic mt-0.5 md:mt-1 text-left line-clamp-2 md:line-clamp-none">
+                [{family.historyPreview[language]}]
+              </p>
+            )}
+          </div>
+          
+          <div className="shrink-0 flex items-center justify-center border-l border-[#e8dfc9] pl-4 md:pl-6">
+            {family.coatOfArmsImageUrl ? (
+              <img 
+                src={family.coatOfArmsImageUrl} 
+                alt={`${family.coatOfArms[language]} coat of arms`} 
+                className="w-auto h-12 md:h-20 filter drop-shadow opacity-95 hover:opacity-100 transition-opacity"
+              />
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" className="w-10 h-12 md:w-16 md:h-20 filter drop-shadow opacity-95 hover:opacity-100 transition-opacity">
+                <path d="M 10 10 L 90 10 L 90 60 C 90 90, 50 115, 50 115 C 50 115, 10 90, 10 60 Z" fill="#991b1b" stroke="#c5a059" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M 35 110 C 35 95, 65 95, 65 110" fill="#a4a4a4" stroke="#c5a059" strokeWidth="1.5" />
+                <rect x="46" y="40" width="8" height="55" fill="#f8fafc" rx="2" />
+                <rect x="30" y="55" width="40" height="8" fill="#f8fafc" rx="2" />
+                <rect x="18" y="70" width="16" height="4" fill="#f8fafc" rx="1" transform="rotate(45 26 72)" />
+                <rect x="24" y="64" width="4" height="16" fill="#f8fafc" rx="1" transform="rotate(45 26 72)" />
+                <rect x="66" y="70" width="16" height="4" fill="#f8fafc" rx="1" transform="rotate(-45 74 72)" />
+                <rect x="72" y="64" width="4" height="16" fill="#f8fafc" rx="1" transform="rotate(-45 74 72)" />
+              </svg>
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="font-mono text-[13px] md:text-[14px] text-ink-light leading-relaxed whitespace-pre-wrap">
@@ -165,16 +193,24 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
                 {person.deathPlace ? ` {${t.diedAbbr} ${person.deathPlace}}` : ''})
               </span>
             )}
+
+            {(person.marriageDate || person.marriagePlace) && (
+              <span className="ml-2 font-medium opacity-90 text-crimson-dark">
+                (∞ {person.marriageDate || '?'}
+                {person.marriagePlace ? ` {${person.marriagePlace}}` : ''})
+              </span>
+            )}
             
             {person.description && (
               <div 
                 className="mt-0.5" 
                 style={{ textIndent: '0' }}
               >
-                {person.description.split(/(?:\n|(?=\s*∞))/).map((part, i) => {
+                {person.description.split(/(?:\n|(?=\s*(?:∞|Дружина:|Wife:|Żona:|Чоловік:|Husband:|Mąż:)))/).map((part, i) => {
                   const trimmed = part.trim();
                   if (!trimmed) return null;
-                  if (trimmed.startsWith('∞')) {
+                  const isMarriage = /^(∞|Дружина:|Wife:|Żona:|Чоловік:|Husband:|Mąż:)/i.test(trimmed);
+                  if (isMarriage) {
                     return (
                       <div key={i} className="pl-4 md:pl-6 text-ink/95 font-medium mt-1">
                         <span dangerouslySetInnerHTML={{ __html: formatTextWithLinks(trimmed) }} />
