@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { DEFAULT_FAMILIES } from './data';
 import PedigreeView from './components/PedigreeView';
 import ContactSection from './components/ContactSection';
@@ -10,12 +11,35 @@ function AppContent() {
   const [selectedFamily, setSelectedFamily] = useState<FamilyConfig | null>(DEFAULT_FAMILIES[0]);
   const { t, language, setLanguage } = useLanguage();
 
-  useEffect(() => {
-    document.title = `${t.titlePrefix} ${t.titleSuffix}`;
-  }, [t.titlePrefix, t.titleSuffix]);
+  const getPageTitle = () => {
+    if (selectedFamily) {
+      return `${t.titleFamilyPrefix} ${selectedFamily.name[language]} ${t.titleFamilySuffix} ${selectedFamily.coatOfArms[language]}`;
+    }
+    return `${t.titlePrefix} ${t.titleSuffix} - ${t.heroTag}`;
+  };
+
+  const getPageDescription = () => {
+    if (selectedFamily) {
+      if (language === 'uk') return `Генеалогія, родовід та історія походження роду ${selectedFamily.name['uk']} (гербу ${selectedFamily.coatOfArms['uk']}). Дізнайтесь про своїх предків.`;
+      if (language === 'pl') return `Genealogia, rodowód i historia pochodzenia rodu ${selectedFamily.name['pl']} (herbu ${selectedFamily.coatOfArms['pl']}). Poznaj swoich przodków.`;
+      return `Genealogy, pedigree and family tree of the ${selectedFamily.name['en']} family (coat of arms ${selectedFamily.coatOfArms['en']}). Discover your noble ancestors.`;
+    }
+    return t.heroSubtitle;
+  };
+
+  const keywords = "Станкевич, родовід Станкевичів, Stankiewicz, genealogia Stankiewiczów, Stankiewicz family tree, герб Могила, herb Mogiła, noble families, шляхта";
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
+      <Helmet htmlAttributes={{ lang: language }}>
+        <title>{getPageTitle()}</title>
+        <meta name="description" content={getPageDescription()} />
+        <meta name="keywords" content={keywords} />
+        <link rel="canonical" href={window.location.href} />
+        <meta property="og:title" content={getPageTitle()} />
+        <meta property="og:description" content={getPageDescription()} />
+        <meta property="og:type" content="website" />
+      </Helmet>
       {/* Header */}
       <header className="border-b border-parchment-dark bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
