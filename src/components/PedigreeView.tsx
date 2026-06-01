@@ -156,7 +156,7 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
           const genRoman = romanize(parseInt(levelNum));
           return (
             <div key={levelNum} className="relative">
-              <h3 className="text-2xl font-display text-crimson mb-8 border-b border-parchment-dark pb-2 flex items-center gap-4">
+              <h3 className="text-2xl font-display text-crimson mb-8 border-b border-parchment-dark pb-2 flex items-baseline gap-4">
                 <span className="text-gold font-sans font-medium text-sm tracking-widest uppercase">{t.generation}</span>
                 {genRoman}
               </h3>
@@ -166,11 +166,11 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
                   <div key={person.id} className="relative group">
                     <div className="absolute -left-6 top-2 w-2 h-2 rounded-full bg-gold/40 group-hover:bg-gold transition-colors duration-300 hidden md:block"></div>
                     
-                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-1">
-                      <span className="font-mono text-gold-light text-sm hidden md:inline-block w-8">
+                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 mb-1">
+                      <span className="font-mono text-gold-light text-sm hidden md:inline-block shrink-0 opacity-80">
                         {person.itemIndex}
                       </span>
-                      <h4 className="text-xl font-display font-semibold text-ink">
+                      <h4 className="text-xl font-serif font-semibold text-ink">
                         {person.name}
                       </h4>
                     </div>
