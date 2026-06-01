@@ -13,6 +13,7 @@ export interface Person {
   deathDate: string;
   deathPlace: string;
   description: string;
+  sources: string;
   coatOfArms?: string;
   generation?: number;
   order?: number; // Order within siblings
@@ -27,5 +28,5 @@ export interface FamilyConfig {
   name: LocalizedString;
   coatOfArms: LocalizedString;
   historyPreview?: LocalizedString;
-  googleSheetCsvUrl: string;
+  googleSheetCsvUrl: LocalizedString;
 }

@@ -2,9 +2,38 @@ import React, { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import { Person, TreeItem, FamilyConfig } from '../types';
 import { buildGenerationalTree, flattenGenerationalTree, romanize } from '../lib/treeUtils';
-import { Loader2, AlertCircle } from 'lucide-react';
+import { Loader2, AlertCircle, ExternalLink } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../i18n/LanguageContext';
+
+function formatTextWithLinks(text: string) {
+  if (!text) return '';
+  const escapeHtml = (str: string) => str.replace(/[&<>"']/g, match => {
+    const escape: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
+    return escape[match] || match;
+  });
+  let safeText = escapeHtml(text);
+  
+  const tokens: string[] = [];
+  safeText = safeText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (match, label, url) => {
+    const token = `@@LINK${tokens.length}@@`;
+    tokens.push(`<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-crimson hover:text-crimson-dark underline decoration-crimson/30 underline-offset-2 transition-colors">${label}</a>`);
+    return token;
+  });
+
+  safeText = safeText.replace(/(https?:\/\/[^\s<]+)/g, (match) => {
+    const token = `@@LINK${tokens.length}@@`;
+    tokens.push(`<a href="${match}" target="_blank" rel="noopener noreferrer" class="text-crimson hover:text-crimson-dark underline decoration-crimson/30 underline-offset-2 transition-colors break-all">${match}</a>`);
+    return token;
+  });
+
+  tokens.forEach((html, i) => {
+    safeText = safeText.replace(`@@LINK${i}@@`, html);
+  });
+  
+  safeText = safeText.replace(/\n/g, '<br/>');
+  return safeText;
+}
 
 interface PedigreeViewProps {
   family: FamilyConfig;
@@ -41,6 +70,7 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
             deathDate: row.deathDate || '',
             deathPlace: row.deathPlace || '',
             description: row.description || '',
+            sources: row.sources || '',
             coatOfArms: row.coatOfArms || undefined,
             order: row.order ? parseInt(row.order) : undefined,
           }));
@@ -49,8 +79,9 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
           setLoading(false);
         };
 
-        if (family.googleSheetCsvUrl.startsWith('http')) {
-          Papa.parse(family.googleSheetCsvUrl, {
+        const url = family.googleSheetCsvUrl[language];
+        if (url && url.startsWith('http')) {
+          Papa.parse(url, {
             download: true,
             header: true,
             skipEmptyLines: true,
@@ -71,7 +102,7 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
     };
 
     loadData();
-  }, [family, t.errorDesc]);
+  }, [family, language, t.errorDesc]);
 
   if (loading) {
     return (
@@ -167,6 +198,19 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
                       <p className="text-ink-light leading-relaxed text-sm md:pl-12 mt-2">
                         {person.description}
                       </p>
+                    )}
+                    
+                    {person.sources && (
+                      <div className="md:pl-12 mt-4 bg-parchment-dark/30 p-3 md:p-4 rounded-lg border border-parchment-dark/50">
+                        <span className="text-[10px] font-bold text-gold uppercase tracking-widest flex items-center gap-1.5 mb-2">
+                          <ExternalLink className="w-3 h-3" />
+                          {t.sources}
+                        </span>
+                        <div 
+                          className="text-ink-light text-xs leading-relaxed space-y-1" 
+                          dangerouslySetInnerHTML={{ __html: formatTextWithLinks(person.sources) }} 
+                        />
+                      </div>
                     )}
                   </div>
                 ))}

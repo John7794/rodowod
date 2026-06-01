@@ -26,6 +26,7 @@ export const translations = {
     loading: 'Розгортаємо старовинні пергаменти...',
     errorTitle: 'Помилка завантаження родоводу',
     errorDesc: 'Помилка при читанні даних таблиці.',
+    sources: 'Джерела',
   },
   en: {
     titlePrefix: 'Noble',
@@ -52,6 +53,7 @@ export const translations = {
     loading: 'Unrolling ancient parchments...',
     errorTitle: 'Error loading pedigree',
     errorDesc: 'Error reading table data.',
+    sources: 'Sources',
   },
   pl: {
     titlePrefix: 'Rodowody',
@@ -78,5 +80,6 @@ export const translations = {
     loading: 'Rozwijanie starożytnych pergaminów...',
     errorTitle: 'Błąd podczas ładowania rodowodu',
     errorDesc: 'Błąd odczytu danych z tabeli.',
+    sources: 'Źródła',
   }
 };

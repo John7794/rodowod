@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DEFAULT_FAMILIES } from './data';
 import PedigreeView from './components/PedigreeView';
 import ContactSection from './components/ContactSection';
@@ -9,6 +9,10 @@ import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 function AppContent() {
   const [selectedFamily, setSelectedFamily] = useState<FamilyConfig | null>(DEFAULT_FAMILIES[0]);
   const { t, language, setLanguage } = useLanguage();
+
+  useEffect(() => {
+    document.title = `${t.titlePrefix} ${t.titleSuffix}`;
+  }, [t.titlePrefix, t.titleSuffix]);
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
