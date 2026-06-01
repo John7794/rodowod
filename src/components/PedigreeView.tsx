@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import { Person, TreeItem, FamilyConfig } from '../types';
-import { buildGenerationalTree, flattenGenerationalTree, romanize } from '../lib/treeUtils';
-import { Loader2, AlertCircle, ExternalLink } from 'lucide-react';
+import { buildGenerationalTree, flattenGenerationalTreeClassic } from '../lib/treeUtils';
+import { Loader2, AlertCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../i18n/LanguageContext';
 
@@ -17,13 +17,13 @@ function formatTextWithLinks(text: string) {
   const tokens: string[] = [];
   safeText = safeText.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, (match, label, url) => {
     const token = `@@LINK${tokens.length}@@`;
-    tokens.push(`<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-crimson hover:text-crimson-dark underline decoration-crimson/30 underline-offset-2 transition-colors">${label}</a>`);
+    tokens.push(`<a href="${url}" target="_blank" rel="noopener noreferrer" class="text-crimson hover:text-crimson-dark underline decoration-crimson/30 underline-offset-2 transition-colors cursor-pointer inline-flex items-center gap-1"><span>${label}</span><svg class="w-3 h-3 opacity-70 -mt-0.5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l6 6-6 6"/><path d="M4 12h16"/></svg></a>`);
     return token;
   });
 
   safeText = safeText.replace(/(https?:\/\/[^\s<]+)/g, (match) => {
     const token = `@@LINK${tokens.length}@@`;
-    tokens.push(`<a href="${match}" target="_blank" rel="noopener noreferrer" class="text-crimson hover:text-crimson-dark underline decoration-crimson/30 underline-offset-2 transition-colors break-all">${match}</a>`);
+    tokens.push(`<a href="${match}" target="_blank" rel="noopener noreferrer" class="text-crimson hover:text-crimson-dark underline decoration-crimson/30 underline-offset-2 transition-colors break-all cursor-pointer inline-flex items-center gap-1"><span>${match}</span><svg class="w-3 h-3 opacity-70 -mt-0.5 shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l6 6-6 6"/><path d="M4 12h16"/></svg></a>`);
     return token;
   });
 
@@ -126,98 +126,78 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
   }
 
   const tree = buildGenerationalTree(people);
-  const flattened = flattenGenerationalTree(tree);
-
-  // Group by generation level
-  const generations = flattened.reduce((acc, person) => {
-    const level = person.level;
-    if (!acc[level]) acc[level] = [];
-    acc[level].push(person);
-    return acc;
-  }, {} as Record<number, typeof flattened>);
+  const flattened = flattenGenerationalTreeClassic(tree);
 
   return (
-    <div className="max-w-4xl mx-auto mt-12 bg-white/60 p-6 md:p-12 shadow-sm rounded-xl border border-parchment-dark/50 backdrop-blur-sm relative">
+    <div className="max-w-5xl mx-auto mt-8 bg-[#fdfbf7] p-6 md:p-12 shadow-sm rounded border border-[#e8dfc9] relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-50"></div>
       
       <div className="text-center mb-16">
-        <h2 className="text-4xl font-display text-ink mb-4">{t.familyPrefix} {family.name[language]}</h2>
-        {family.coatOfArms[language] && (
-          <p className="text-ink-light italic mb-6">{t.coatOfArmsPrefix} {family.coatOfArms[language]}</p>
-        )}
-        <div className="w-24 h-[1px] bg-gold mx-auto mb-6"></div>
+        <h2 className="text-3xl md:text-4xl font-display font-medium text-ink mb-2">
+          {t.titleFamilyPrefix} {family.name[language]} {t.titleFamilySuffix} {family.coatOfArms[language]}
+        </h2>
         {family.historyPreview?.[language] && (
-          <p className="text-ink-light leading-relaxed max-w-2xl mx-auto">{family.historyPreview[language]}</p>
+          <p className="text-ink-light text-sm italic max-w-4xl mx-auto mt-4 px-4">
+            [{family.historyPreview[language]}]
+          </p>
         )}
       </div>
 
-      <div className="space-y-16">
-        {Object.entries(generations).map(([levelNum, members]) => {
-          const genRoman = romanize(parseInt(levelNum));
-          return (
-            <div key={levelNum} className="relative">
-              <h3 className="text-2xl font-display text-crimson mb-8 border-b border-parchment-dark pb-2 flex items-baseline gap-4">
-                <span className="text-gold font-sans font-medium text-sm tracking-widest uppercase">{t.generation}</span>
-                {genRoman}
-              </h3>
-              
-              <div className="space-y-8 pl-0 md:pl-8">
-                {members.map((person) => (
-                  <div key={person.id} className="relative group">
-                    <div className="absolute -left-6 top-2 w-2 h-2 rounded-full bg-gold/40 group-hover:bg-gold transition-colors duration-300 hidden md:block"></div>
-                    
-                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 mb-1">
-                      <span className="font-mono text-gold-light text-sm hidden md:inline-block shrink-0 opacity-80">
-                        {person.itemIndex}
-                      </span>
-                      <h4 className="text-xl font-serif font-semibold text-ink">
-                        {person.name}
-                      </h4>
-                    </div>
-                    
-                    {(person.birthDate || person.birthPlace || person.deathDate || person.deathPlace) && (
-                      <div className="text-ink-light text-sm italic flex flex-wrap gap-x-4 mb-2 md:pl-12">
-                        {(person.birthDate || person.birthPlace) && (
-                          <span className="flex items-center gap-1">
-                            <span className="text-gold">*</span> 
-                            {person.birthDate || '?'} 
-                            {person.birthPlace && <span>({person.birthPlace})</span>}
-                          </span>
-                        )}
-                        {(person.deathDate || person.deathPlace) && (
-                          <span className="flex items-center gap-1">
-                            <span className="text-gold">†</span> 
-                            {person.deathDate || '?'} 
-                            {person.deathPlace && <span>({person.deathPlace})</span>}
-                          </span>
-                        )}
+      <div className="font-mono text-[13px] md:text-[14px] text-ink-light leading-relaxed whitespace-pre-wrap">
+        {flattened.map((person) => (
+          <div 
+            key={person.id} 
+            style={{ 
+              paddingLeft: `${(person.level - 1) * 1.5}rem`, 
+              textIndent: '-1.5rem', 
+              marginLeft: '1.5rem' 
+            }} 
+            className="mb-1"
+          >
+            <span className="font-medium text-ink mr-2">{person.treeIndex}</span>
+            <span className="font-bold text-ink">{person.name}</span>
+            
+            {(person.birthDate || person.deathDate || person.birthPlace || person.deathPlace) && (
+              <span className="ml-1 opacity-90">
+                (* {person.birthDate || '?'} 
+                {person.birthPlace ? ` {${t.bornAbbr} ${person.birthPlace}}` : ''} 
+                {' '}† {person.deathDate || '?'}
+                {person.deathPlace ? ` {${t.diedAbbr} ${person.deathPlace}}` : ''})
+              </span>
+            )}
+            
+            {person.description && (
+              <div 
+                className="mt-0.5" 
+                style={{ textIndent: '0' }}
+              >
+                {person.description.split(/(?:\n|(?=\s*∞))/).map((part, i) => {
+                  const trimmed = part.trim();
+                  if (!trimmed) return null;
+                  if (trimmed.startsWith('∞')) {
+                    return (
+                      <div key={i} className="pl-4 md:pl-6 text-ink/95 font-medium mt-1">
+                        <span dangerouslySetInnerHTML={{ __html: formatTextWithLinks(trimmed) }} />
                       </div>
-                    )}
-                    
-                    {person.description && (
-                      <p className="text-ink-light leading-relaxed text-sm md:pl-12 mt-2">
-                        {person.description}
-                      </p>
-                    )}
-                    
-                    {person.sources && (
-                      <div className="md:pl-12 mt-4 bg-parchment-dark/30 p-3 md:p-4 rounded-lg border border-parchment-dark/50">
-                        <span className="text-[10px] font-bold text-gold uppercase tracking-widest flex items-center gap-1.5 mb-2">
-                          <ExternalLink className="w-3 h-3" />
-                          {t.sources}
-                        </span>
-                        <div 
-                          className="text-ink-light text-xs leading-relaxed space-y-1" 
-                          dangerouslySetInnerHTML={{ __html: formatTextWithLinks(person.sources) }} 
-                        />
-                      </div>
-                    )}
-                  </div>
-                ))}
+                    );
+                  }
+                  return (
+                    <div key={i} className="text-ink-light pl-2" dangerouslySetInnerHTML={{ __html: formatTextWithLinks(trimmed) }} />
+                  );
+                })}
               </div>
-            </div>
-          );
-        })}
+            )}
+            
+            {person.sources && (
+              <div className="ml-2 mt-1 mb-2 opacity-70 border-l border-gold/40 pl-2 lg:pl-3" style={{ textIndent: '0' }}>
+                <span className="text-[10px] font-bold text-gold uppercase tracking-widest block mb-0.5">
+                  {t.sources}
+                </span>
+                <span dangerouslySetInnerHTML={{ __html: formatTextWithLinks(person.sources) }} />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

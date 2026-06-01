@@ -32,24 +32,33 @@ export function buildGenerationalTree(people: Person[]): TreeItem[] {
   return rootItems;
 }
 
-export function flattenGenerationalTree(tree: TreeItem[], generation = 1): (Person & { level: number, itemIndex: string })[] {
-  const flattened: (Person & { level: number, itemIndex: string })[] = [];
+export function flattenGenerationalTreeClassic(tree: TreeItem[], generation = 1): (Person & { level: number, treeIndex: string })[] {
+  const flattened: (Person & { level: number, treeIndex: string })[] = [];
   
-  function traverse(nodes: TreeItem[], currentLevel: number, prefix: string) {
+  const rootSymbols = ['+', '♣', '♦', '♥', '♠', '★', '●'];
+
+  function traverse(nodes: TreeItem[], currentLevel: number) {
     nodes.forEach((node, index) => {
-      const currentPrefix = prefix ? `${prefix}.${index + 1}` : `${index + 1}`;
+      let treeIndex = '';
+      if (currentLevel === 1) {
+        treeIndex = rootSymbols[index % rootSymbols.length]; 
+      } else {
+        const letter = String.fromCharCode(64 + currentLevel - 1);
+        treeIndex = `${letter}${index + 1}`;
+      }
+      
       flattened.push({
         ...node,
         level: currentLevel,
-        itemIndex: currentPrefix,
+        treeIndex: treeIndex,
       });
       if (node.children.length > 0) {
-        traverse(node.children, currentLevel + 1, currentPrefix);
+        traverse(node.children, currentLevel + 1);
       }
     });
   }
 
-  traverse(tree, generation, '');
+  traverse(tree, generation);
   return flattened;
 }
 
