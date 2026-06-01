@@ -8,7 +8,10 @@ export interface Person {
   id: string;
   parentId: string | null;
   name: string;
-  birthDeath: string;
+  birthDate: string;
+  birthPlace: string;
+  deathDate: string;
+  deathPlace: string;
   description: string;
   coatOfArms?: string;
   generation?: number;
@@ -23,6 +26,6 @@ export interface FamilyConfig {
   id: string;
   name: LocalizedString;
   coatOfArms: LocalizedString;
-  historyPreview: LocalizedString;
+  historyPreview?: LocalizedString;
   googleSheetCsvUrl: string;
 }

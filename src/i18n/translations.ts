@@ -2,8 +2,8 @@ export type Language = 'uk' | 'en' | 'pl';
 
 export const translations = {
   uk: {
-    titlePrefix: 'Шляхта',
-    titleSuffix: 'України',
+    titlePrefix: 'Родоводи',
+    titleSuffix: 'Шляхти',
     navFamilies: 'Родоводи',
     navAbout: 'Про проект',
     navContact: 'Сконтактуватись',
@@ -29,7 +29,7 @@ export const translations = {
   },
   en: {
     titlePrefix: 'Noble',
-    titleSuffix: 'Families',
+    titleSuffix: 'Pedigrees',
     navFamilies: 'Pedigrees',
     navAbout: 'About',
     navContact: 'Contact',
@@ -54,8 +54,8 @@ export const translations = {
     errorDesc: 'Error reading table data.',
   },
   pl: {
-    titlePrefix: 'Szlachta',
-    titleSuffix: 'Ukrainy',
+    titlePrefix: 'Rodowody',
+    titleSuffix: 'Szlacheckie',
     navFamilies: 'Rodowody',
     navAbout: 'O projekcie',
     navContact: 'Kontakt',

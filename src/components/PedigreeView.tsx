@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Papa from 'papaparse';
 import { Person, TreeItem, FamilyConfig } from '../types';
 import { buildGenerationalTree, flattenGenerationalTree, romanize } from '../lib/treeUtils';
-import { MOCK_SHEET_CSV } from '../data';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { useLanguage } from '../i18n/LanguageContext';
@@ -24,39 +23,49 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
     // In a real application, you would fetch the public Google Sheets CSV URL:
     // fetch(family.googleSheetCsvUrl).then(res => res.text()).then(...)
     
-    // For this demonstration, we simulate network delay and use our mock CSV data
     const loadData = async () => {
       try {
-        await new Promise(resolve => setTimeout(resolve, 800)); // Simulate loading
-        
-        Papa.parse(MOCK_SHEET_CSV, {
-          header: true,
-          skipEmptyLines: true,
-          complete: (results) => {
-            if (results.errors.length > 0) {
-              setError(t.errorDesc);
-              return;
-            }
-            
-            const parsedPeople: Person[] = results.data.map((row: any) => ({
-              id: row.id,
-              parentId: row.parentId || null,
-              name: row.name || 'Невідомо',
-              birthDeath: row.birthDeath || '',
-              description: row.description || '',
-              coatOfArms: row.coatOfArms || undefined,
-              order: row.order ? parseInt(row.order) : undefined,
-            }));
-            
-            setPeople(parsedPeople);
-          },
-          error: (err: any) => {
-            setError(err.message);
+        const processResults = (results: Papa.ParseResult<any>) => {
+          if (results.errors.length > 0) {
+            setError(t.errorDesc);
+            setLoading(false);
+            return;
           }
-        });
+          
+          const parsedPeople: Person[] = results.data.map((row: any) => ({
+            id: String(row.id),
+            parentId: row.parentId ? String(row.parentId) : null,
+            name: row.name || 'Невідомо',
+            birthDate: row.birthDate || '',
+            birthPlace: row.birthPlace || '',
+            deathDate: row.deathDate || '',
+            deathPlace: row.deathPlace || '',
+            description: row.description || '',
+            coatOfArms: row.coatOfArms || undefined,
+            order: row.order ? parseInt(row.order) : undefined,
+          }));
+          
+          setPeople(parsedPeople);
+          setLoading(false);
+        };
+
+        if (family.googleSheetCsvUrl.startsWith('http')) {
+          Papa.parse(family.googleSheetCsvUrl, {
+            download: true,
+            header: true,
+            skipEmptyLines: true,
+            complete: processResults,
+            error: (err: any) => {
+              setError(err.message);
+              setLoading(false);
+            }
+          });
+        } else {
+          setError('Google Sheet CSV URL is missing or invalid.');
+          setLoading(false);
+        }
       } catch (err: any) {
         setError(err.message || 'Error');
-      } finally {
         setLoading(false);
       }
     };
@@ -106,7 +115,9 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
           <p className="text-ink-light italic mb-6">{t.coatOfArmsPrefix} {family.coatOfArms[language]}</p>
         )}
         <div className="w-24 h-[1px] bg-gold mx-auto mb-6"></div>
-        <p className="text-ink-light leading-relaxed max-w-2xl mx-auto">{family.historyPreview[language]}</p>
+        {family.historyPreview?.[language] && (
+          <p className="text-ink-light leading-relaxed max-w-2xl mx-auto">{family.historyPreview[language]}</p>
+        )}
       </div>
 
       <div className="space-y-16">
@@ -124,22 +135,36 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
                   <div key={person.id} className="relative group">
                     <div className="absolute -left-6 top-2 w-2 h-2 rounded-full bg-gold/40 group-hover:bg-gold transition-colors duration-300 hidden md:block"></div>
                     
-                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-2">
+                    <div className="flex flex-col md:flex-row md:items-baseline gap-2 md:gap-4 mb-1">
                       <span className="font-mono text-gold-light text-sm hidden md:inline-block w-8">
                         {person.itemIndex}
                       </span>
                       <h4 className="text-xl font-display font-semibold text-ink">
                         {person.name}
                       </h4>
-                      {person.birthDeath && (
-                        <span className="text-ink-light text-sm italic">
-                          ({person.birthDeath})
-                        </span>
-                      )}
                     </div>
                     
+                    {(person.birthDate || person.birthPlace || person.deathDate || person.deathPlace) && (
+                      <div className="text-ink-light text-sm italic flex flex-wrap gap-x-4 mb-2 md:pl-12">
+                        {(person.birthDate || person.birthPlace) && (
+                          <span className="flex items-center gap-1">
+                            <span className="text-gold">*</span> 
+                            {person.birthDate || '?'} 
+                            {person.birthPlace && <span>({person.birthPlace})</span>}
+                          </span>
+                        )}
+                        {(person.deathDate || person.deathPlace) && (
+                          <span className="flex items-center gap-1">
+                            <span className="text-gold">†</span> 
+                            {person.deathDate || '?'} 
+                            {person.deathPlace && <span>({person.deathPlace})</span>}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    
                     {person.description && (
-                      <p className="text-ink-light leading-relaxed text-sm md:pl-12">
+                      <p className="text-ink-light leading-relaxed text-sm md:pl-12 mt-2">
                         {person.description}
                       </p>
                     )}
