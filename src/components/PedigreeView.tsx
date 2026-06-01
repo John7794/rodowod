@@ -172,16 +172,19 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
       </div>
 
       <div className="font-mono text-[13px] md:text-[14px] text-ink-light leading-relaxed whitespace-pre-wrap">
-        {flattened.map((person) => (
-          <div 
-            key={person.id} 
-            style={{ 
-              paddingLeft: `${(person.level - 1) * 1.5}rem`, 
-              textIndent: '-1.5rem', 
-              marginLeft: '1.5rem' 
-            }} 
-            className="mb-1"
-          >
+        {flattened.map((person, index) => (
+          <React.Fragment key={person.id}>
+            {person.level === 1 && index > 0 && (
+              <div className="h-px bg-gold/40 w-full my-6 md:my-8" />
+            )}
+            <div 
+              style={{ 
+                paddingLeft: `${(person.level - 1) * 1.5}rem`, 
+                textIndent: '-1.5rem', 
+                marginLeft: '1.5rem' 
+              }} 
+              className={`mb-1 ${person.level === 1 ? 'mt-4 font-bold' : ''}`}
+            >
             <span className="font-medium text-ink mr-2">{person.treeIndex}</span>
             <span className="font-bold text-ink">{person.name}</span>
             
@@ -233,6 +236,7 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
               </div>
             )}
           </div>
+          </React.Fragment>
         ))}
       </div>
     </div>
