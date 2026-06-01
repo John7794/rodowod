@@ -1,0 +1,6 @@
+{
+  "name": "Родоводи Шляхти",
+  "description": "Сайт для відображення шляхетських родоводів у вигляді поколінного розпису з інтеграцією Google Таблиць.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
