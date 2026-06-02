@@ -75,4 +75,70 @@
     <xhtml:link rel="alternate" hreflang="pl" href="https://stankiewicz-pedigree.com/?family=stankiewicz&amp;lang=pl" />
   </url>
 
+  <!-- Borkowski Pedigree - Ukrainian -->
+  <url>
+    <loc>https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=uk</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=uk" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=pl" />
+  </url>
+
+  <!-- Borkowski Pedigree - English -->
+  <url>
+    <loc>https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=en</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=uk" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=pl" />
+  </url>
+
+  <!-- Borkowski Pedigree - Polish -->
+  <url>
+    <loc>https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=pl</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=uk" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://stankiewicz-pedigree.com/?family=borkowski&amp;lang=pl" />
+  </url>
+
+  <!-- Malczewski Pedigree - Ukrainian -->
+  <url>
+    <loc>https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=uk</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=uk" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=pl" />
+  </url>
+
+  <!-- Malczewski Pedigree - English -->
+  <url>
+    <loc>https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=en</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=uk" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=pl" />
+  </url>
+
+  <!-- Malczewski Pedigree - Polish -->
+  <url>
+    <loc>https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=pl</loc>
+    <lastmod>2026-06-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=uk" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=en" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://stankiewicz-pedigree.com/?family=malczewski&amp;lang=pl" />
+  </url>
+
 </urlset>
