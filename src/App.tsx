@@ -77,18 +77,24 @@ function AppContent() {
     return typeof window !== 'undefined' ? `${window.location.origin}/favicon.svg` : '';
   };
 
-  const getLanguageUrl = (lang: string) => {
-    if (typeof window === 'undefined') return '';
-    const params = new URLSearchParams(window.location.search);
-    params.set('lang', lang);
-    return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+  const getLanguageUrl = (targetLang: string) => {
+    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://rodowod.vercel.app';
+    const path = typeof window !== 'undefined' ? window.location.pathname : '/';
+    
+    const params = new URLSearchParams();
+    if (selectedFamily) {
+      params.set('family', selectedFamily.id);
+    }
+    params.set('lang', targetLang);
+    
+    return `${baseUrl}${path}?${params.toString()}`;
   };
 
   const keywords = selectedFamily 
     ? `${selectedFamily.name['uk']}, родовід ${selectedFamily.name['uk']}, ${selectedFamily.name['en']}, genealogia ${selectedFamily.name['pl']}, ${selectedFamily.name['en']} family tree, герб ${selectedFamily.coatOfArms['uk']}, herb ${selectedFamily.coatOfArms['pl']}, pedigree, noble families, шляхта`
     : "Станкевичі, Борковські, Мальчевські, родовід Станкевичів, родовід Борковських, родовід Мальчевських, Stankiewicz, Borkowski, Malczewski, genealogia, family tree, герб Могила, герб Новина, герб Тарнава, шляхта, генеалогія, родоводи шляхти";
 
-  const currentCanonical = typeof window !== 'undefined' ? window.location.href : '';
+  const currentCanonical = getLanguageUrl(language);
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
