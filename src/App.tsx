@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { DEFAULT_FAMILIES } from './data';
 import PedigreeView from './components/PedigreeView';
 import ContactSection from './components/ContactSection';
-import { BookOpen, Search, Menu } from 'lucide-react';
+import { BookOpen, Menu } from 'lucide-react';
 import { FamilyConfig } from './types';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
 
@@ -85,8 +85,8 @@ function AppContent() {
   };
 
   const keywords = selectedFamily 
-    ? `${selectedFamily.name['uk']}, родовід ${selectedFamily.name['uk']}ів, ${selectedFamily.name['en']}, genealogia ${selectedFamily.name['pl']}ów, ${selectedFamily.name['en']} family tree, герб ${selectedFamily.coatOfArms['uk']}, herb ${selectedFamily.coatOfArms['pl']}, pedigree, noble families, шляхта`
-    : "Станкевич, родовід Станкевичів, Stankiewicz, genealogia Stankiewiczów, Stankiewicz family tree, герб Могила, herb Mogiła, noble families, шляхта, родоводи шляхти, генеалогія";
+    ? `${selectedFamily.name['uk']}, родовід ${selectedFamily.name['uk']}, ${selectedFamily.name['en']}, genealogia ${selectedFamily.name['pl']}, ${selectedFamily.name['en']} family tree, герб ${selectedFamily.coatOfArms['uk']}, herb ${selectedFamily.coatOfArms['pl']}, pedigree, noble families, шляхта`
+    : "Станкевичі, Борковські, Мальчевські, родовід Станкевичів, родовід Борковських, родовід Мальчевських, Stankiewicz, Borkowski, Malczewski, genealogia, family tree, герб Могила, герб Новина, герб Тарнава, шляхта, генеалогія, родоводи шляхти";
 
   const currentCanonical = typeof window !== 'undefined' ? window.location.href : '';
 
@@ -125,9 +125,9 @@ function AppContent() {
             <div className="w-10 h-10 rounded-full bg-crimson flex items-center justify-center">
               <BookOpen className="text-gold w-5 h-5" />
             </div>
-            <h1 className="font-display font-bold text-xl tracking-wide text-ink uppercase hidden sm:block">
+            <div className="font-display font-bold text-xl tracking-wide text-ink uppercase hidden sm:block">
               {t.titlePrefix} <span className="text-gold">{t.titleSuffix}</span>
-            </h1>
+            </div>
           </div>
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide">
             <a href="#families" className="text-ink hover:text-crimson transition-colors cursor-pointer">
@@ -168,10 +168,10 @@ function AppContent() {
             <span className="text-crimson font-semibold tracking-[0.2em] text-sm uppercase mb-6 block">
               {t.heroTag}
             </span>
-            <h2 className="text-5xl md:text-7xl font-display font-bold text-ink mb-8 leading-tight">
+            <h1 className="text-5xl md:text-7xl font-display font-bold text-ink mb-8 leading-tight">
               {t.heroTitlePart1} <br/>
               <span className="text-gold italic font-normal">{t.heroTitlePart2}</span>
-            </h2>
+            </h1>
             <p className="text-xl text-ink-light max-w-2xl mx-auto mb-12 leading-relaxed">
               {t.heroSubtitle}
             </p>
@@ -184,15 +184,6 @@ function AppContent() {
             
             {/* Sidebar with Families */}
             <div className="col-span-1 border border-parchment-dark rounded-xl bg-white p-6 h-fit sticky top-28">
-              <div className="relative mb-6">
-                <input 
-                  type="text" 
-                  placeholder={t.searchPlaceholder}
-                  className="w-full pl-10 pr-4 py-3 rounded-lg border border-parchment-dark bg-parchment focus:outline-none focus:border-gold focus:ring-1 focus:ring-gold transition-all"
-                />
-                <Search className="absolute left-3 top-3.5 w-5 h-5 text-ink-light/50" />
-              </div>
-              
               <h3 className="font-display text-sm font-semibold tracking-widest uppercase text-ink-light mb-4">
                 {t.familyList}
               </h3>
@@ -202,7 +193,7 @@ function AppContent() {
                   <button
                     key={family.id}
                     onClick={() => handleSetSelectedFamily(family)}
-                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 cursor-pointer ${
                       selectedFamily?.id === family.id 
                         ? 'bg-ink text-parchment shadow-md' 
                         : 'hover:bg-parchment hover:text-crimson'

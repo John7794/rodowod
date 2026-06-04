@@ -131,10 +131,10 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
   const flattened = flattenGenerationalTreeClassic(tree);
 
   return (
-    <div className="max-w-5xl mx-auto mt-8 bg-[#fdfbf7] p-6 md:p-12 shadow-sm rounded border border-[#e8dfc9] relative">
+    <article className="max-w-5xl mx-auto mt-8 bg-[#fdfbf7] p-6 md:p-12 shadow-sm rounded border border-[#e8dfc9] relative">
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-50"></div>
       
-      <div className="sticky top-[64px] md:top-20 z-30 bg-[#fdfbf7] py-3 md:py-4 mb-6 border-b border-[#e8dfc9] -mx-6 px-6 md:-mx-12 md:px-12 -mt-6 md:-mt-12 rounded-t shadow-sm">
+      <header className="sticky top-[64px] md:top-20 z-30 bg-[#fdfbf7] py-3 md:py-4 mb-6 border-b border-[#e8dfc9] -mx-6 px-6 md:-mx-12 md:px-12 -mt-6 md:-mt-12 rounded-t shadow-sm">
         <div className="flex flex-row items-center justify-between gap-4 max-w-4xl mx-auto">
           <div className="text-left flex-1">
             <h2 className="text-lg md:text-3xl font-display font-medium text-ink mb-0.5 md:mb-1 leading-tight">
@@ -152,7 +152,7 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
             {family.coatOfArmsImageUrl ? (
               <img 
                 src={family.coatOfArmsImageUrl} 
-                alt={`${family.coatOfArms[language]} coat of arms`} 
+                alt={`${t.coatOfArmsAlt} ${family.coatOfArms[language]} (${family.name[language]})`} 
                 className="w-auto h-12 md:h-20 filter drop-shadow opacity-95 hover:opacity-100 transition-opacity"
               />
             ) : (
@@ -169,7 +169,7 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
             )}
           </div>
         </div>
-      </div>
+      </header>
 
       <div className="font-mono text-[13px] md:text-[14px] text-ink-light leading-relaxed whitespace-pre-wrap">
         {flattened.map((person, index) => (
@@ -186,7 +186,7 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
               className={`mb-1 ${person.level === 1 ? 'mt-4 font-bold' : ''}`}
             >
             <span className="font-medium text-ink mr-2">{person.treeIndex}</span>
-            <span className="font-bold text-ink">{person.name}</span>
+            <span className="font-bold text-ink hover:text-crimson cursor-pointer transition-colors" title={person.name}>{person.name}</span>
             
             {(person.birthDate || person.deathDate || person.birthPlace || person.deathPlace) && (
               <span className="ml-1 opacity-90">
@@ -239,6 +239,6 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
           </React.Fragment>
         ))}
       </div>
-    </div>
+    </article>
   );
 }
