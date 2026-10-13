@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { Language, translations } from './translations';
+import { parseRoute, buildUrl } from '../lib/routing';
 
 interface LanguageContextType {
   language: Language;
@@ -11,12 +12,8 @@ const LanguageContext = createContext<LanguageContextType | undefined>(undefined
 
 const getInitialLanguage = (): Language => {
   if (typeof window === 'undefined') return 'uk';
-  const params = new URLSearchParams(window.location.search);
-  const langParam = params.get('lang');
-  if (langParam === 'en' || langParam === 'pl' || langParam === 'uk') {
-    return langParam;
-  }
-  return 'uk';
+  const { lang } = parseRoute(window.location.pathname, window.location.search);
+  return lang;
 };
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
@@ -24,11 +21,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search);
-      const langParam = params.get('lang');
-      if (langParam === 'en' || langParam === 'pl' || langParam === 'uk') {
-        setLanguage(langParam);
-      }
+      const { lang } = parseRoute(window.location.pathname, window.location.search);
+      setLanguage(lang);
     };
 
     window.addEventListener('popstate', handlePopState);
@@ -38,10 +32,9 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const handleSetLanguage = (newLang: Language) => {
     setLanguage(newLang);
     if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      params.set('lang', newLang);
-      const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
-      window.history.pushState({ lang: newLang }, '', newUrl);
+      const { familyId } = parseRoute(window.location.pathname, window.location.search);
+      const newPath = buildUrl(newLang, familyId);
+      window.history.pushState({ lang: newLang, familyId }, '', newPath);
     }
   };
 

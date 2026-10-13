@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 
-# Sitemaps
-Sitemap: /sitemap.xml
+# Host & Sitemap
+Host: https://rodowod.vercel.app
+Sitemap: https://rodowod.vercel.app/sitemap.xml

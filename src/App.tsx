@@ -6,11 +6,14 @@ import ContactSection from './components/ContactSection';
 import { BookOpen, Menu } from 'lucide-react';
 import { FamilyConfig } from './types';
 import { LanguageProvider, useLanguage } from './i18n/LanguageContext';
+import { parseRoute, buildUrl } from './lib/routing';
+import { Language } from './i18n/translations';
+
+const SITE_URL = 'https://rodowod.vercel.app';
 
 const getInitialFamily = (): FamilyConfig | null => {
   if (typeof window === 'undefined') return DEFAULT_FAMILIES[0];
-  const params = new URLSearchParams(window.location.search);
-  const familyId = params.get('family');
+  const { familyId } = parseRoute(window.location.pathname, window.location.search);
   if (familyId) {
     const matched = DEFAULT_FAMILIES.find(f => f.id.toLowerCase() === familyId.toLowerCase());
     if (matched) return matched;
@@ -24,8 +27,7 @@ function AppContent() {
 
   useEffect(() => {
     const handlePopState = () => {
-      const params = new URLSearchParams(window.location.search);
-      const familyId = params.get('family');
+      const { familyId } = parseRoute(window.location.pathname, window.location.search);
       if (familyId) {
         const matched = DEFAULT_FAMILIES.find(f => f.id.toLowerCase() === familyId.toLowerCase());
         if (matched) {
@@ -43,14 +45,8 @@ function AppContent() {
   const handleSetSelectedFamily = (family: FamilyConfig | null) => {
     setSelectedFamily(family);
     if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      if (family) {
-        params.set('family', family.id);
-      } else {
-        params.delete('family');
-      }
-      const newUrl = `${window.location.pathname}?${params.toString()}${window.location.hash}`;
-      window.history.pushState({ familyId: family?.id }, '', newUrl);
+      const newPath = buildUrl(language, family?.id || null);
+      window.history.pushState({ familyId: family?.id }, '', newPath);
     }
   };
 
@@ -63,9 +59,13 @@ function AppContent() {
 
   const getPageDescription = () => {
     if (selectedFamily) {
-      if (language === 'uk') return `Генеалогія, родовід та історія походження роду ${selectedFamily.name['uk']} (гербу ${selectedFamily.coatOfArms['uk']}). Дізнайтесь про своїх предків.`;
-      if (language === 'pl') return `Genealogia, rodowód i historia pochodzenia rodu ${selectedFamily.name['pl']} (herbu ${selectedFamily.coatOfArms['pl']}). Poznaj swoich przodków.`;
-      return `Genealogy, pedigree and family tree of the ${selectedFamily.name['en']} family (coat of arms ${selectedFamily.coatOfArms['en']}). Discover your noble ancestors.`;
+      if (language === 'uk') {
+        return `Генеалогія, родовід та історія шляхетського роду ${selectedFamily.name['uk']} (герб ${selectedFamily.coatOfArms['uk']}). Відкритий поколінний розпис, предки та архівні джерела.`;
+      }
+      if (language === 'pl') {
+        return `Genealogia, rodowód i historia rodu szlacheckiego ${selectedFamily.name['pl']} (herb ${selectedFamily.coatOfArms['pl']}). Drzewo genealogiczne, wywód przodków i źródła archiwalne.`;
+      }
+      return `Genealogy, pedigree and family tree of the ${selectedFamily.name['en']} noble lineage (coat of arms ${selectedFamily.coatOfArms['en']}). Archival sources and generational register.`;
     }
     return t.heroSubtitle;
   };
@@ -74,27 +74,53 @@ function AppContent() {
     if (selectedFamily?.coatOfArmsImageUrl) {
       return selectedFamily.coatOfArmsImageUrl;
     }
-    return typeof window !== 'undefined' ? `${window.location.origin}/favicon.svg` : '';
+    return `${SITE_URL}/favicon.svg`;
   };
 
-  const getLanguageUrl = (targetLang: string) => {
-    const baseUrl = typeof window !== 'undefined' ? window.location.origin : 'https://rodowod.vercel.app';
-    const path = typeof window !== 'undefined' ? window.location.pathname : '/';
-    
-    const params = new URLSearchParams();
-    if (selectedFamily) {
-      params.set('family', selectedFamily.id);
-    }
-    params.set('lang', targetLang);
-    
-    return `${baseUrl}${path}?${params.toString()}`;
+  const getCleanLanguageUrl = (targetLang: Language) => {
+    return `${SITE_URL}${buildUrl(targetLang, selectedFamily?.id || null)}`;
   };
 
   const keywords = selectedFamily 
-    ? `${selectedFamily.name['uk']}, родовід ${selectedFamily.name['uk']}, ${selectedFamily.name['en']}, genealogia ${selectedFamily.name['pl']}, ${selectedFamily.name['en']} family tree, герб ${selectedFamily.coatOfArms['uk']}, herb ${selectedFamily.coatOfArms['pl']}, pedigree, noble families, шляхта`
+    ? `${selectedFamily.name['uk']}, родовід ${selectedFamily.name['uk']}, шляхта ${selectedFamily.name['uk']}, герб ${selectedFamily.coatOfArms['uk']}, ${selectedFamily.name['pl']}, rodowód ${selectedFamily.name['pl']}, genealogia ${selectedFamily.name['pl']}, herb ${selectedFamily.coatOfArms['pl']}, ${selectedFamily.name['en']} family tree, Polish nobility, szlachta, поколінний розпис`
     : "Станкевичі, Борковські, Мальчевські, родовід Станкевичів, родовід Борковських, родовід Мальчевських, Stankiewicz, Borkowski, Malczewski, genealogia, family tree, герб Могила, герб Новина, герб Тарнава, шляхта, генеалогія, родоводи шляхти";
 
-  const currentCanonical = getLanguageUrl(language);
+  const currentCanonical = getCleanLanguageUrl(language);
+
+  // Schema.org Structured Data (JSON-LD) for Rich Google Snippets
+  const structuredData = selectedFamily ? {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": currentCanonical
+    },
+    "headline": getPageTitle(),
+    "description": getPageDescription(),
+    "image": getOgImage(),
+    "inLanguage": language,
+    "about": {
+      "@type": "Thing",
+      "name": `${selectedFamily.name[language]} (${selectedFamily.coatOfArms[language]})`,
+      "description": selectedFamily.historyPreview?.[language] || ""
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "Родоводи Шляхти — Генеалогічний архів",
+      "url": SITE_URL,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${SITE_URL}/favicon.svg`
+      }
+    }
+  } : {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": SITE_URL,
+    "name": "Родоводи Шляхти — Генеалогічний архів",
+    "description": t.heroSubtitle,
+    "inLanguage": ["uk", "pl", "en"]
+  };
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -104,11 +130,11 @@ function AppContent() {
         <meta name="keywords" content={keywords} />
         <link rel="canonical" href={currentCanonical} />
         
-        {/* hreflang tags for beautiful multilingual indexation */}
-        <link rel="alternate" hrefLang="uk" href={getLanguageUrl('uk')} />
-        <link rel="alternate" hrefLang="en" href={getLanguageUrl('en')} />
-        <link rel="alternate" hrefLang="pl" href={getLanguageUrl('pl')} />
-        <link rel="alternate" hrefLang="x-default" href={getLanguageUrl('uk')} />
+        {/* hreflang tags for exact language matching in Google Search */}
+        <link rel="alternate" hrefLang="uk" href={getCleanLanguageUrl('uk')} />
+        <link rel="alternate" hrefLang="pl" href={getCleanLanguageUrl('pl')} />
+        <link rel="alternate" hrefLang="en" href={getCleanLanguageUrl('en')} />
+        <link rel="alternate" hrefLang="x-default" href={getCleanLanguageUrl('uk')} />
 
         {/* Open Graph Tags for high traction sharing */}
         <meta property="og:title" content={getPageTitle()} />
@@ -123,7 +149,13 @@ function AppContent() {
         <meta name="twitter:title" content={getPageTitle()} />
         <meta name="twitter:description" content={getPageDescription()} />
         <meta name="twitter:image" content={getOgImage()} />
+
+        {/* Structured Data (JSON-LD) */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
       </Helmet>
+
       {/* Header */}
       <header className="border-b border-parchment-dark bg-white/80 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">

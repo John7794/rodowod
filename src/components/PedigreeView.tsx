@@ -171,6 +171,39 @@ export default function PedigreeView({ family }: PedigreeViewProps) {
         </div>
       </header>
 
+      {/* SEO & Knowledge Section */}
+      {(family.historyFull?.[language] || family.coatOfArmsDesc?.[language] || family.origins?.[language]) && (
+        <section className="mb-8 p-5 bg-[#faf5ec] border border-[#e8dfc9] rounded-lg text-sm text-ink leading-relaxed">
+          <h3 className="font-display font-semibold text-base text-crimson mb-2 uppercase tracking-wide">
+            {language === 'uk' ? 'Історична довідка та геральдика' : language === 'pl' ? 'Rys historyczny i heraldyka' : 'Historical Context & Heraldry'}
+          </h3>
+          {family.historyFull?.[language] && (
+            <p className="mb-3 text-ink/90">
+              {family.historyFull[language]}
+            </p>
+          )}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 pt-2 border-t border-parchment-dark/60 text-xs">
+            {family.coatOfArmsDesc?.[language] && (
+              <div>
+                <strong className="text-gold uppercase tracking-wider block mb-1">
+                  {language === 'uk' ? 'Опис герба' : language === 'pl' ? 'Opis herbu' : 'Coat of Arms'}:
+                </strong>
+                <span className="text-ink-light">{family.coatOfArmsDesc[language]}</span>
+              </div>
+            )}
+            {family.origins?.[language] && (
+              <div>
+                <strong className="text-gold uppercase tracking-wider block mb-1">
+                  {language === 'uk' ? 'Географія та осередки' : language === 'pl' ? 'Geografia i gniazda rodowe' : 'Regions & Seats'}:
+                </strong>
+                <span className="text-ink-light">{family.origins[language]}</span>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+
       <div className="font-mono text-[13px] md:text-[14px] text-ink-light leading-relaxed whitespace-pre-wrap">
         {flattened.map((person, index) => (
           <React.Fragment key={person.id}>

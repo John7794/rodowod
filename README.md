@@ -1,20 +1,36 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# Родоводи Шляхти — Генеалогічний архів
 
-# Run and deploy your AI Studio app
+Відкрита база поколінних розписів та генеалогічних досліджень шляхетських родів Речі Посполитої, Великого князівства Литовського та Гетьманщини.
 
-This contains everything you need to run your app locally.
+🌐 **Сайт проєкту**: [rodowod.vercel.app](https://rodowod.vercel.app/)
 
-View your app in AI Studio: https://ai.studio/apps/47b8ca9c-cfd2-40dd-8b4d-14198633be80
+---
 
-## Run Locally
+## 🏛️ Опубліковані роди:
+- **Станкевичі** (герб *Могила* / *Mogiła*) — Волинь, Київщина, Поділля, Віленщина.
+- **Борковські** (герб *Новина* / *Nowina*) — Волинь, Поділля, Галичина, Малопольща.
+- **Мальчевські** (герб *Тарнава* / *Tarnawa*) — Волинь, Сандомирська земля, Поділля.
 
-**Prerequisites:**  Node.js
+---
 
+## 🌍 Мови та прямі посилання:
+| Рід | Українська (UA) | Польська (PL) | Англійська (EN) |
+| :--- | :--- | :--- | :--- |
+| **Станкевичі** | [/uk/stankiewicz](https://rodowod.vercel.app/uk/stankiewicz) | [/pl/stankiewicz](https://rodowod.vercel.app/pl/stankiewicz) | [/en/stankiewicz](https://rodowod.vercel.app/en/stankiewicz) |
+| **Борковські** | [/uk/borkowski](https://rodowod.vercel.app/uk/borkowski) | [/pl/borkowski](https://rodowod.vercel.app/pl/borkowski) | [/en/borkowski](https://rodowod.vercel.app/en/borkowski) |
+| **Мальчевські** | [/uk/malczewski](https://rodowod.vercel.app/uk/malczewski) | [/pl/malczewski](https://rodowod.vercel.app/pl/malczewski) | [/en/malczewski](https://rodowod.vercel.app/en/malczewski) |
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+
+## 🚀 Технічний стек:
+- React 19 + TypeScript + Vite
+- Tailwind CSS
+- React Helmet Async (динамічні SEO теги, Open Graph, Twitter Cards)
+- Schema.org JSON-LD мікророзмітка
+- Багатомовний sitemap.xml з підтримкою `hreflang`
+
+## 🛠️ Запуск локально:
+```bash
+npm install
+npm run dev
+```

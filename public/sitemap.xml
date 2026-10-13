@@ -1,145 +1,159 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?xml-stylesheet type="text/xsl" href="/sitemap.xsl"?>
 <!-- 
   Sitemap for Noble Pedigrees / Родоводи Шляхти.
-  This sitemap indexes all multi-language versions and active node targets of the SPA application.
+  Indexes clean multilingual routes and distinct family pages:
+  - Stankiewicz (herb Mogiła)
+  - Borkowski (herb Nowina)
+  - Malczewski (herb Tarnawa)
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
-  <!-- Root URL - Ukrainian (Default) -->
+  <!-- Home - Ukrainian (Default) -->
   <url>
     <loc>https://rodowod.vercel.app/</loc>
-    <lastmod>2026-06-01</lastmod>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?lang=pl" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/" />
   </url>
 
-  <!-- Root URL - English -->
+  <!-- Home - Polish -->
   <url>
-    <loc>https://rodowod.vercel.app/?lang=en</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://rodowod.vercel.app/pl</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?lang=pl" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/" />
   </url>
 
-  <!-- Root URL - Polish -->
+  <!-- Home - English -->
   <url>
-    <loc>https://rodowod.vercel.app/?lang=pl</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://rodowod.vercel.app/en</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?lang=pl" />
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/" />
   </url>
 
-  <!-- Stankiewicz Pedigree - Ukrainian -->
+  <!-- ==================== STANKIEWICZ ==================== -->
+  <!-- Stankiewicz - Ukrainian -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=stankiewicz&amp;lang=uk</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://rodowod.vercel.app/uk/stankiewicz</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=pl" />
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/stankiewicz" />
   </url>
 
-  <!-- Stankiewicz Pedigree - English -->
+  <!-- Stankiewicz - Polish -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=stankiewicz&amp;lang=en</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://rodowod.vercel.app/pl/stankiewicz</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=pl" />
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/stankiewicz" />
   </url>
 
-  <!-- Stankiewicz Pedigree - Polish -->
+  <!-- Stankiewicz - English -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=stankiewicz&amp;lang=pl</loc>
-    <lastmod>2026-06-01</lastmod>
+    <loc>https://rodowod.vercel.app/en/stankiewicz</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=stankiewicz&amp;lang=pl" />
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/stankiewicz" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/stankiewicz" />
   </url>
 
-  <!-- Borkowski Pedigree - Ukrainian -->
+  <!-- ==================== BORKOWSKI ==================== -->
+  <!-- Borkowski - Ukrainian -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=borkowski&amp;lang=uk</loc>
-    <lastmod>2026-06-02</lastmod>
+    <loc>https://rodowod.vercel.app/uk/borkowski</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=pl" />
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/borkowski" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/borkowski" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/borkowski" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/borkowski" />
   </url>
 
-  <!-- Borkowski Pedigree - English -->
+  <!-- Borkowski - Polish -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=borkowski&amp;lang=en</loc>
-    <lastmod>2026-06-02</lastmod>
+    <loc>https://rodowod.vercel.app/pl/borkowski</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=pl" />
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/borkowski" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/borkowski" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/borkowski" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/borkowski" />
   </url>
 
-  <!-- Borkowski Pedigree - Polish -->
+  <!-- Borkowski - English -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=borkowski&amp;lang=pl</loc>
-    <lastmod>2026-06-02</lastmod>
+    <loc>https://rodowod.vercel.app/en/borkowski</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=borkowski&amp;lang=pl" />
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/borkowski" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/borkowski" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/borkowski" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/borkowski" />
   </url>
 
-  <!-- Malczewski Pedigree - Ukrainian -->
+  <!-- ==================== MALCZEWSKI ==================== -->
+  <!-- Malczewski - Ukrainian -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=malczewski&amp;lang=uk</loc>
-    <lastmod>2026-06-02</lastmod>
+    <loc>https://rodowod.vercel.app/uk/malczewski</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=pl" />
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/malczewski" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/malczewski" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/malczewski" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/malczewski" />
   </url>
 
-  <!-- Malczewski Pedigree - English -->
+  <!-- Malczewski - Polish -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=malczewski&amp;lang=en</loc>
-    <lastmod>2026-06-02</lastmod>
+    <loc>https://rodowod.vercel.app/pl/malczewski</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=pl" />
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/malczewski" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/malczewski" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/malczewski" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/malczewski" />
   </url>
 
-  <!-- Malczewski Pedigree - Polish -->
+  <!-- Malczewski - English -->
   <url>
-    <loc>https://rodowod.vercel.app/?family=malczewski&amp;lang=pl</loc>
-    <lastmod>2026-06-02</lastmod>
+    <loc>https://rodowod.vercel.app/en/malczewski</loc>
+    <lastmod>2026-10-13</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=uk" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=en" />
-    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/?family=malczewski&amp;lang=pl" />
+    <priority>0.90</priority>
+    <xhtml:link rel="alternate" hreflang="uk" href="https://rodowod.vercel.app/uk/malczewski" />
+    <xhtml:link rel="alternate" hreflang="pl" href="https://rodowod.vercel.app/pl/malczewski" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://rodowod.vercel.app/en/malczewski" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://rodowod.vercel.app/uk/malczewski" />
   </url>
 
 </urlset>

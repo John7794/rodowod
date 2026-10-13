@@ -30,6 +30,10 @@ export interface FamilyConfig {
   name: LocalizedString;
   coatOfArms: LocalizedString;
   coatOfArmsImageUrl?: string;
+  coatOfArmsDesc?: LocalizedString;
+  origins?: LocalizedString;
   historyPreview?: LocalizedString;
+  historyFull?: LocalizedString;
   googleSheetCsvUrl: LocalizedString;
 }
+
